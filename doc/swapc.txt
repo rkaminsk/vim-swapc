@@ -1,0 +1,120 @@
+*swapc.txt*	For Vim version 7.3 +python	Last change: 2015 Jul 21
+
+==============================================================================
+
+ 0.- CONTENTS                                          *swapc* *swapc-contents*
+
+    1. Introduction_____________________________________|swapc-intro|
+    2. Variables________________________________________|swapc-variables|
+    3. Commands_________________________________________|swapc-commands|
+    4. Mappings_________________________________________|swapc-mappings|
+
+==============================================================================
+
+ 1.- INTRODUCTION                                               *swapc-intro*
+
+This plugin allows for quickly swapping between header and source files.  It
+is intended to be used for languages like C or C++. It might work for other
+languages having a similar structure too, since you can specify custom
+patterns to swap between files (see |'g:swapc_patterns'|).
+
+==============================================================================
+
+ 2.- VARIABLES                                              *swapc-variables*
+
+------------------------------------------------------------------------------
+                                                         *'g:swapc_patterns'*
+Values: list of lists of patterns
+Default: >
+ let g:swapc_patterns = [
+ \ [ '#{prefix}/src/#{sub}/${file}.?{cc,c,cpp,cxx,C}', 
+ \   '#{prefix}/include/#{sub}/${file}.?{hh,h,hpp,hxx,H}' ] ]
+>
+The swapc plugin tries to match the file name of the active buffer with any of
+the patterns in the list. If a pattern matches, then the remaining patterns in
+the same sublist are inspected to find a file to swap to.
+
+Note that after changing this variable |:SwapcReset| should to be called for
+the changes to take effect.
+
+The following wildcards are available in patterns:
+ #{name}    - matches an arbitrary number of directories
+ ${name}    - matches part of a directory or file name component
+ ?{a,b,...} - matches one of the strings between the parenthesis (only
+              alpha-numeric characters depending on locale are permitted)
+where name is a name for the wildcard.
+
+Patterns are first matched against the filename. Then, to find a file to swap
+to, the named parts of other patterns in the group are replaced with the
+matches.  If the filename obtained thus exists, then it is loaded into the
+current buffer using the |:edit| command. If the filename contains choices,
+then all possibilities are checked successively.  For this to work, all
+patterns in a group have to refer to the same names - no globbing is done.
+
+Example 1:~
+The default pattern allows for switching source and header files having the
+structure indicated below.
+
+./
+|-src/
+| |-foo/
+| | `-a.c
+| |-b.c
+| `-c.c
+`-include/
+  |-foo/
+  | `-a.h
+  |-b.h
+  `-c.h
+
+Example 2:~
+It is also possible to specify more complex patterns for other project layouts
+and to use multiple pattern groups.
+>
+ let g:swapc_patterns = [
+ \ [ '#{prefix}/${file}.?{cc,c,cpp,cxx,C}',
+ \   '#{prefix}/${file}.?{hh,h,hpp,hxx,H}' ],
+ \ [ '#{prefix}/lib${lib}/src/#{sub}/${file}.?{cc,c,cpp,cxx,C}',
+ \   '#{prefix}/lib${lib}/${lib}/#{sub}/${file}.?{hh,h,hpp,hxx,H}' ] ]
+<
+./
+|-libfoo/
+| |-foo/
+| | `-a.h
+| `-src/
+|   `-a.c
+`-libbar/
+  |-bar/
+  | `-b.h
+  `-src/
+    |-b.c
+    |-c.h
+    `-c.c
+
+==============================================================================
+
+ 3.- COMMANDS                                                *swapc-commands*
+
+------------------------------------------------------------------------------
+:Swapc                                                               *:Swapc*
+
+Swaps the file in the current buffer using the configured patterns (see 
+|'g:swapc_patterns'|).
+
+------------------------------------------------------------------------------
+:SwapcReset                                                     *:SwapcReset*
+
+Refreshes the patterns used for swapping. This function should be called when
+the |'g:swapc_patterns'| variable is changed.
+
+==============================================================================
+
+ 4.- MAPPINGS                                                *swapc-mappings*
+
+By default swapc uses only one mapping:
+
+<Leader>6 is mapped to |:Swapc|
+
+==============================================================================
+
+vim:tw=78:et:ts=8:sw=8:ft=help

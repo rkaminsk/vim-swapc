@@ -1,0 +1,10 @@
+'g:swapc_patterns'	swapc.txt	/*'g:swapc_patterns'*
+:Swapc	swapc.txt	/*:Swapc*
+:SwapcReset	swapc.txt	/*:SwapcReset*
+swapc	swapc.txt	/*swapc*
+swapc-commands	swapc.txt	/*swapc-commands*
+swapc-contents	swapc.txt	/*swapc-contents*
+swapc-intro	swapc.txt	/*swapc-intro*
+swapc-mappings	swapc.txt	/*swapc-mappings*
+swapc-variables	swapc.txt	/*swapc-variables*
+swapc.txt	swapc.txt	/*swapc.txt*
