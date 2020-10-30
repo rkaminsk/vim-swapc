@@ -2,7 +2,7 @@
 
 ==============================================================================
 
- 0.- CONTENTS                                          *swapc* *swapc-contents*
+ 0.- CONTENTS                                        *swapc* *swapc-contents*
 
     1. Introduction_____________________________________|swapc-intro|
     2. Variables________________________________________|swapc-variables|
